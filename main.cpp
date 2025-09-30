@@ -3,5 +3,8 @@
 #include "src/prime.hpp"
 
 int main() {
-  // Your driver program goes here
+
+    std::cout << "Hello and Welcome to the Well That's Just Prime! lab\n\n";
+
+
 }
