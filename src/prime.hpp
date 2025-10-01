@@ -1,14 +1,12 @@
 #pragma once
 
 #include <string>
-#include <sstream>
-#include <iostream>
 #include <vector>
 
 
-bool ValidUserInput_for_Factorize(std::string &userInput);
+bool ValidUserInput_for_Factorize(const std::string &userInput);
 
-bool Program_Run();
+void Program_Run();
 
 
 class Factorize {
@@ -18,7 +16,9 @@ private:
     std::vector<int> myFactors;
 
 public:
-    explicit Factorize(int &number);
-    bool wasOriginalPrime();
-    void find_factors();
+    explicit Factorize(const int &number);
+    bool wasOriginalPrime(const std::vector<int> &check) const;
+    std::vector<int> find_factors();
+    std::string prettyPrint_myFactors(const std::vector<int> &factorList) const;
+    void setFactors();
 };
