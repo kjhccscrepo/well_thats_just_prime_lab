@@ -1,72 +1,25 @@
-
 #include <string>
 #include <vector>
-#include <iostream>
 #include <sstream>
 #include "prime.hpp"
-
-
-bool ValidUserInput_for_Factorize(const std::string &userInput) {
-    for (int i = 0; i < userInput.length(); i++) {
-        if (!std::isdigit(userInput[i])) {
-            return false;
-        }
-    }
-    try {
-        const int test = std::stoi(userInput);
-    } catch (...) {
-        return false;
-    }
-    const int potentialInput = std::stoi(userInput);
-    return true;
-}
-void Program_Run() {
-    bool continueProgram = true;
-    while (continueProgram) {
-        std::string input;
-        bool validatedInput = false;
-        while (!validatedInput) {
-            std::cout << "Please enter in a positive integer:\t";
-            getline(std::cin, input);
-            if (!ValidUserInput_for_Factorize(input)) {
-                std::cout << "\nPlease enter a valid positive Integer Value...\n";
-            } else {
-                validatedInput = true;
-            }
-        }
-        int userInputInt = std::stoi(input);
-        Factorize userFactor(userInputInt);
-
-
-
-
-
-        continueProgram = false;
-    }
-
-}
 
 Factorize::Factorize(const int &number) {
     this->myBaseNum = number;
     this->myScope = number;
 }
-
-
 bool Factorize::wasOriginalPrime(const std::vector<int> &check) const {
     if (check.at(0) == myBaseNum) {
         return true;
     } else
         return false;
 }
-
-
 std::vector<int> Factorize::find_factors() {
     std::vector<int> factors;
     if (myBaseNum <= 1) {
         return factors;
     }
     bool isMyScopePrime = false;
-    int timeTillConfirmedPrime;
+    int timeTillConfirmedPrime(0);
     while (!isMyScopePrime) {
         timeTillConfirmedPrime = myScope;
         for (int i = 2; i <= (myScope - 1); i++) {
@@ -89,25 +42,33 @@ std::vector<int> Factorize::find_factors() {
     }
     return factors;
 }
+std::string Factorize::wasCompositeOrPrime() const {
+    if (wasOriginalPrime(myFactors)) {
+        return "Prime";
+    }
+    return "Composite";
+}
 
-std::string Factorize::prettyPrint_myFactors(const std::vector<int> &factorList) const {
-    std::stringstream factorStringstream;
-    if (factorList.empty()) {
-        factorStringstream << "The number inputted was less than or equal to 1,\nenter a different number and try again...";
-    } else {
-        factorStringstream << "The factors of " << this->myFactors.size() << " are:\t";
-        for (int i = 0; i < this->myFactors.size(); i++) {
-            factorStringstream << this->myFactors.at(i);
-            if (i != this->myFactors.size() - 1) {
-                factorStringstream << " X ";
-            }
+std::string Factorize::factorListString() const {
+    std::stringstream fs;
+    for (int i = 0; i < this->myFactors.size(); i++) {
+        fs << myFactors.at(i);
+        if (i != myFactors.size() - 1) {
+            fs << " X ";
         }
     }
-    return factorStringstream.str();
+    return fs.str();
 }
-
+std::string Factorize::prettyPrint_myFactors() const {
+    std::stringstream stringStreamFactorPrettyPrint;
+    if (myFactors.empty()) {
+        stringStreamFactorPrettyPrint << "The number inputted was less than or equal to 1.\nEnter a different number and try again...\n";
+    } else {
+        stringStreamFactorPrettyPrint << "The factors of " << myBaseNum << " are:\t";
+        stringStreamFactorPrettyPrint << factorListString() << "\n";
+    }
+    return stringStreamFactorPrettyPrint.str();
+}
 void Factorize::setFactors() {
-    myFactors == find_factors();
+    myFactors = find_factors();
 }
-
-
