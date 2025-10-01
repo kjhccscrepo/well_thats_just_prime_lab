@@ -5,7 +5,6 @@
 class Factorize {
 private:
     int myBaseNum;
-    int myScope;
     std::vector<int> myFactors;
 public:
     explicit Factorize(const int &number);
