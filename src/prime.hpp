@@ -9,6 +9,7 @@ private:
 public:
     explicit Factorize(const int &number);
     bool wasOriginalPrime(const std::vector<int> &check) const;
+    std::vector<int> findFactorsLoop(std::vector<int> &check, int mxIterate, const int &myScope);
     std::vector<int> find_factors();
     std::string wasCompositeOrPrime() const;
     std::string factorListString() const;

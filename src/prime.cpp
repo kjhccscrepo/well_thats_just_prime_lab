@@ -4,8 +4,6 @@
 #include <algorithm>
 #include "prime.hpp"
 
-
-
 Factorize::Factorize(const int &number) {
     this->myBaseNum = number;
 }
@@ -15,33 +13,26 @@ bool Factorize::wasOriginalPrime(const std::vector<int> &check) const {
     } else
         return false;
 }
+std::vector<int> Factorize::findFactorsLoop(std::vector<int> &check, int mxIterate, const int &myScope) {
+    for (int i = 2; i <= (myScope - 1); i++) {
+        if (myScope % i == 0) {
+            check.push_back(i);
+            return findFactorsLoop(check, (myScope / i) - 1, (myScope / i));
+        }
+            mxIterate--;
+        if (mxIterate == 2 && i == (myScope - 1)) {
+            check.push_back(myScope);
+        }
+    }
+    return check;
+}
 std::vector<int> Factorize::find_factors() {
     std::vector<int> factors;
     if (myBaseNum <= 1) {
         return factors;
     }
-    int myScope = myBaseNum;
-    int fixScope = myScope;
-    bool isMyScopePrime = false;
-    int timeTillConfirmedPrime;
-    while (!isMyScopePrime) {
-        // program is stuck in here
-        timeTillConfirmedPrime = myScope;
-        for (int i = 2; i <= (myScope - 1); i++) {
-            if (myScope % i == 0) {
-                fixScope = myScope;
-                factors.push_back(i);
-                myScope = (fixScope / i);
-                i = myBaseNum;
-            } else {
-                timeTillConfirmedPrime--;
-            }
-            if (timeTillConfirmedPrime == 1 && i == (myScope - 1)) {
-                isMyScopePrime = true;
-                factors.push_back(myScope);
-            }
-        }
-    }
+    int iterationMax = myBaseNum - 1;
+    factors = findFactorsLoop(factors, iterationMax, myBaseNum);
     // check if the inserted number was prime
     if (wasOriginalPrime(factors)) {
         factors.push_back(1);
